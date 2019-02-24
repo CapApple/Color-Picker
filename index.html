@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Correct Color Picker</title>
+
+  <!-- Bootstrap File -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+  <!-- JQuery -->
+  <script src="https://code.jquery.com/jquery.js"></script>
+
+  <style>
+    #rand-target-color,
+    #color-picker li {
+      font-size: 24px;
+    }
+  </style>
+
+</head>
+<body>
+
+  <div class="container">
+    <h2>Correct Color Picker</h2>
+    <p>Pick the <b>color</b> of the word shown from the list below it.</p>
+
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">
+
+          <!-- Create random target color -->
+          <span id="rand-target-color">
+            test
+          </span>
+
+        </h3>
+      </div>
+      <div class="card-body">
+
+        <!-- Create colors to pick -->
+        <ul class="list-unstyled" id="color-picker">
+        </ul>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+    // JavaScript function that wraps everything
+    $(document).ready(function game() {
+      // Array for word colors
+      var colorsOfText = [];
+
+      // Target word
+      var targetColor;
+
+      // Target word color
+      var targetColorOfText;
+
+      // User"s selection
+      var userAnswer;
+
+      // Array for words
+      var colors = [
+        "brown",
+        "blue",
+        "magenta",
+        "teal",
+        "coral",
+        "black"
+      ];
+
+      // This function sets a random color "word" and a random set of colors "visuals"
+      function randColor() {
+
+        // Set random word
+        var word = colors[Math.floor(Math.random() * colors.length)];
+        console.log(word);
+        // Set random word color
+        targetColor = colors[Math.floor(Math.random()*colors.length)];
+        console.log(targetColor); 
+        $("#rand-target-color").text(word);
+        $("#rand-target-color").css("color", targetColor);
+      }
+
+      // This function creates the actual "game" logic.
+      function createColorPicker() {
+        // Shuffle color array
+        for(i=colors.length-1; i>0; i--){
+          j = Math.floor(Math.random()*i);
+          temp = colors[i];
+          colors[i] = colors [j];
+          colors[j] = temp;
+        }
+
+
+
+        // Push to text color array
+        for(i=0; i<colors.length; i++){
+          colorsOfText.push(colors[i]);
+        }
+        console.log(colorsOfText);
+
+        // Shuffle text color array
+        for(i=colorsOfText.length-1; i>0; i--){
+          j = Math.floor(Math.random()*i);
+          temp = colorsOfText[i];
+          colorsOfText[i] = colorsOfText[j];
+          colorsOfText[j] = temp;
+        }
+        console.log("3 " + colorsOfText);
+
+        // Loop through all colors in the array
+        // Create element to hold word
+        // Output a word
+        // Make word a random color
+        console.log(colors);
+        for(i=0; i<colors.length; i++){
+          var newElement = $("<li>");
+          newElement.text(colors[i]);
+          newElement.css("color", colorsOfText[i]);
+          $(".list-unstyled").append(newElement);
+          $("li").css("cursor", "pointer");
+        }
+
+      }
+
+      // Clear the divs and arrays upon each round.
+      function clear() {
+        $("#rand-target-color").text("");
+        $(".list-unstyled").text("");
+      }
+
+      // Function for resetting colors and setting new colors.
+      function reset() {
+        randColor();
+        createColorPicker();
+      }
+
+      clear();
+      reset();
+
+      // Get id of element clicked by user
+      $("li").click(function(event) {
+        var clickedColor = $(this).text();
+        if(clickedColor === targetColor){
+          alert("You win!");
+        }
+        else{
+          alert("Wrong!");
+        }
+        game();
+      });
+    
+
+      
+
+      // Run game
+      // reset();
+      // $(window).click(function(){
+      //   game();
+      // })
+
+    });
+
+  </script>
+</body>
+</html>
